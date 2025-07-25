@@ -50,19 +50,20 @@ export default function MessagesPage() {
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    const trimmed = input.trim();
+    if (!trimmed) return;
     setChats(chats => chats.map(chat =>
       chat.id === activeChat
-        ? { ...chat, messages: [...chat.messages, { id: Date.now(), sender: "You", text: input, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }] }
+        ? { ...chat, messages: [...chat.messages, { id: Date.now(), sender: "You", text: trimmed, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }] }
         : chat
     ));
     setInput("");
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto py-8 flex bg-white rounded-lg shadow overflow-hidden min-h-[500px] h-[70vh]">
+    <div className="fixed inset-0 flex h-screen w-screen bg-white pt-16">
       {/* Chat list */}
-      <div className="w-1/3 border-r bg-gray-50 flex flex-col">
+      <div className="w-1/3 max-w-xs border-r bg-gray-50 flex flex-col">
         <div className="font-bold text-lg p-4 border-b">Chats</div>
         <ul className="flex-1 overflow-y-auto">
           {chats.map(chat => (
@@ -90,10 +91,10 @@ export default function MessagesPage() {
           {currentChat.messages.map(msg => (
             <div
               key={msg.id}
-              className={`max-w-xs p-2 rounded-lg text-sm ${msg.sender === "You" ? 'bg-purple-100 ml-auto text-right' : 'bg-gray-100'} flex flex-col`}
+              className={`max-w-xs p-2 rounded-lg text-sm ${msg.sender === "You" ? 'bg-purple-100 ml-auto mr-4' : 'bg-gray-100'} flex flex-col`}
             >
-              <span>{msg.text}</span>
-              <span className="text-xs text-gray-400 mt-1">{msg.time}</span>
+              <span className="text-left">{msg.text}</span>
+              <span className="text-xs text-gray-400 mt-1 text-left">{msg.time}</span>
             </div>
           ))}
           <div ref={messagesEndRef} />

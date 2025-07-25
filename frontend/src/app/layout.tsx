@@ -4,7 +4,7 @@ import "./globals.css";
 import Topbar from "../components/Topbar";
 import Rightbar from "../components/Rightbar";
 import { AuthProvider } from "../context/AuthContext";
-import { usePathname } from "next/navigation";
+import ClientLayoutShell from "../components/ClientLayoutShell";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,17 +22,14 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const showRightbar = pathname !== "/messages";
   return (
     <html lang="en">
       <body className="bg-gray-50">
         <AuthProvider>
           <Topbar />
-          <div className="flex justify-center min-h-screen pt-4">
-            <main className="w-full max-w-xl flex flex-col items-center px-2">{children}</main>
-            {showRightbar && <div className="hidden lg:block"><Rightbar /></div>}
-          </div>
+          <ClientLayoutShell>
+            {children}
+          </ClientLayoutShell>
         </AuthProvider>
       </body>
     </html>
